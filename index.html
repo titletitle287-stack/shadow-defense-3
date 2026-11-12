@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>🏰 Shadow Defense 3.0</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header id="hud">
+    <div class="logo">🏰 SD<span>3.0</span></div>
+    <div class="stats">
+      <div class="stat gold" title="Золото">💰<b id="gold">150</b></div>
+      <div class="stat hp" title="HP базы">❤️<b id="hp">20</b></div>
+      <div class="stat wave" title="Волна">🌊<b id="wave">0</b>/<i id="maxWave">10</i></div>
+      <div class="stat kill" title="Убийства">💀<b id="kills">0</b></div>
+      <div class="stat prestige" title="Очки престижа">⭐<b id="prestige">0</b></div>
+    </div>
+    <div class="topButtons">
+      <button id="btnSpeed" title="Скорость">1x</button>
+      <button id="btnPause" title="Пауза">⏸</button>
+      <button id="btnSound" title="Звук">🔊</button>
+      <button id="btnMenu" title="Меню">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="canvasWrap">
+      <canvas id="game" width="1200" height="680"></canvas>
+      <div id="weather" class="weather"></div>
+
+      <div id="toast" class="toast hidden"></div>
+
+      <div id="menu" class="overlay">
+        <div class="panel">
+          <h1>🏰 SHADOW DEFENSE</h1>
+          <p class="subtitle">ULTIMATE EDITION 3.0</p>
+          <button class="big" id="btnPlay">▶ НОВАЯ ИГРА</button>
+          <button class="big alt" id="btnContinue" style="display:none">⏵ ПРОДОЛЖИТЬ</button>
+          <button class="big alt" id="btnEndless" style="display:none">♾ ENDLESS РЕЖИМ</button>
+          <button class="big alt" id="btnAchievements">🏆 ДОСТИЖЕНИЯ</button>
+          <button class="big alt" id="btnTutorial">📖 КАК ИГРАТЬ</button>
+          <p class="footer">v3.0 · Сделано в браузере</p>
+        </div>
+      </div>
+
+      <div id="tutorial" class="overlay hidden">
+        <div class="panel">
+          <h2>📖 Как играть</h2>
+          <ol class="tut">
+            <li><b>Башни</b> — покупай и ставь на поле (не на дорогу)</li>
+            <li><b>Апгрейд</b> — кликни башню, прокачай до 4 уровня</li>
+            <li><b>Герои</b> — нанимай, используй Q/W/E навыки</li>
+            <li><b>Волны</b> — жми ▶ ВОЛНА, отбивай, зарабатывай</li>
+            <li><b>Боссы</b> — на 5, 10, 15 волне. Готовься!</li>
+            <li><b>Погода</b> — меняется, влияет на бой</li>
+            <li><b>Достижения</b> — открывай, получай бонусы</li>
+            <li><b>Престиж</b> — пройди игру, начни заново с бонусами</li>
+          </ol>
+          <button class="big" id="btnCloseTut">Понятно</button>
+        </div>
+      </div>
+
+      <div id="achievementsScreen" class="overlay hidden">
+        <div class="panel">
+          <h2>🏆 Достижения</h2>
+          <div id="achList" class="achList"></div>
+          <button class="big" id="btnCloseAch">Закрыть</button>
+        </div>
+      </div>
+
+      <div id="levelEnd" class="overlay hidden">
+        <div class="panel">
+          <h2 id="levelEndTitle">🏆 Уровень пройден!</h2>
+          <div class="rewards" id="levelEndRewards"></div>
+          <button class="big" id="btnNextLevel">➡ ДАЛЬШЕ</button>
+        </div>
+      </div>
+
+      <div id="gameOver" class="overlay hidden">
+        <div class="panel">
+          <h2>☠️ Поражение</h2>
+          <p class="subtitle">Твоя база пала...</p>
+          <button class="big" id="btnRestart">🔄 СНОВА</button>
+        </div>
+      </div>
+
+      <div id="victory" class="overlay hidden">
+        <div class="panel">
+          <h1>🏆 ПОБЕДА!</h1>
+          <p class="subtitle">Ты защитил королевство!</p>
+          <div class="rewards" id="victoryRewards"></div>
+          <button class="big" id="btnPrestige">⭐ ПРЕСТИЖ (x2 бонусы)</button>
+          <button class="big alt" id="btnPlayAgain">🔄 БЕЗ ПРЕСТИЖА</button>
+        </div>
+      </div>
+    </div>
+
+    <aside id="side">
+      <div class="tabs">
+        <button class="tab active" data-tab="shop">🛒</button>
+        <button class="tab" data-tab="heroes">🦸</button>
+        <button class="tab" data-tab="info">📊</button>
+      </div>
+      <div class="tabContent active" id="tab-shop">
+        <h3>Башни</h3>
+        <div id="towerList" class="cardList"></div>
+      </div>
+      <div class="tabContent" id="tab-heroes">
+        <h3>Герои</h3>
+        <div id="heroList" class="cardList"></div>
+        <h3>Навыки</h3>
+        <div id="skillBar" class="skillBar"></div>
+      </div>
+      <div class="tabContent" id="tab-info">
+        <h3>Инфо</h3>
+        <div id="towerInfo" class="infoBox">Кликни на башню</div>
+      </div>
+      <div class="controls">
+        <button class="primary" id="btnStartWave">▶ ВОЛНА</button>
+        <button class="secondary" id="btnSell" disabled>💰 Продать</button>
+      </div>
+      <div id="log" class="log"></div>
+    </aside>
+  </main>
+</div>
+
+<script src="assets.js"></script>
+<script src="game.js"></script>
+<script src="ui.js"></script>
+</body>
+  </html>
